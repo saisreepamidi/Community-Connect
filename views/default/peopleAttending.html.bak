@@ -1,0 +1,31 @@
+{{left_sidebar_enabled,right_sidebar_enabled=False,('message' in globals())}}
+{{extend 'layout.html'}}
+
+<h1>People attending each Event</h1>
+
+<p>All of the events that people are attending!</p>
+
+
+<table>
+<tr>
+
+    <th>Username</th>
+    <th>Event Name</th>
+    <th>Attending?</th>
+  
+
+</tr>
+{{for i in rows:}}
+<tr>
+<td>{{=i.user_attending.first_name}}</td>
+<td>{{=i.event_name.event_name}}</td>
+<td>{{=i.attended}}</td>
+
+
+</tr>
+{{pass}}
+</table>
+
+
+{{=A('View all Events', _class='btn', _href=URL('default', 'events'))}}
+{{=A('Main Page', _class='btn', _href=URL('default', 'index'))}}

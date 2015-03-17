@@ -1,0 +1,65 @@
+<!--The main page of our project-->
+
+{{left_sidebar_enabled,right_sidebar_enabled=False,('message' in globals())}}
+{{extend 'layout.html'}}
+
+<h3 align="center"; style="font-size:20px; font-family:Georgia, Serif; font-style: italic">Volunteer, Make a Difference</h3>
+{{left_sidebar_enabled,right_sidebar_enabled=False,True}}
+{{extend 'layout.html'}}
+
+<h4 align="center"; style="color:black; font-size:25px;font-family:Georgia, Serif; font-style: italic">What is our website about?</h4>
+
+<p style="color:black; font-size:15px"> ★Community Connect has been an essential part of our society for the past three years. We strive to ensure that all high school students receive equal opportunities to volunteer in their areas. If you navigate to our Events section, you can view all of the different volunteer opportunities that are available for you to attend!</p>
+
+<p style="color:black; font-size:15px"> ★Volunteering is a great way to try new things, make friends, gain experience for service hours, and to be an active member of the community. Our website makes all of this very easy. When signing up for an event, you are able to view the people who signed up for the same event as you. You can message other users to get to know the people you are volunteering with, to ask volunteer coordinators more information about the event, or even to arrange a carpool. </p>
+
+
+<!-- slideshow -->
+<script type="text/javascript">
+// Author: ricocheting.com
+// Description: slideshow that allows visitors to flip through a series of images on your website
+
+var x=0;
+
+function rotate(num){
+fs=document.ff.slide;
+x=num%fs.length;
+if(x<0) x=fs.length-1;
+document.images.show.src=fs.options[x].value;
+fs.selectedIndex=x;}
+
+function auto() {
+if(document.ff.fa.value == "Stop"){
+rotate(++x);setTimeout("auto()", 5000);}}
+</script>
+
+<form name="ff">
+<table cellpadding="3" style="border:1px black solid;border-collapse:collapse;">
+<tr><th align="center"> </th></tr>
+
+<tr><td align="center">
+<img src="http://i.imgur.com/oZmQRSz.jpg" style="width:500px;height:333px" name="show">
+</td></tr>
+
+<tr><td align="center" style="border:1px black solid;">
+<select name="slide" onChange="rotate(this.selectedIndex);">
+<option value="http://i.imgur.com/oZmQRSz.jpg" style="width:250px;height:160px"></option>
+<option value="http://d.wildapricot.net/images/newsblog/bigstock-volunteer-message-and-red-penc-27133619.jpg?sfvrsn=0" style="width:500px;height:333px"></option>
+<option value="http://cdn.runrocknroll.competitor.com/files/2012/12/Gat_SZ_SD12-vol.jpg" style="width:500px;height:333px"></option>
+<option value="http://disabilityhorizons.com/wp-content/uploads/2011/11/volunteering-e1321813484543.jpg" style="width:500px;height:333px"></option>
+<option value="http://www.vfp.org/assets/images/Haiti_Johnson_E_2011_parachute.JPG" style="width:500px;height:333px"></option>
+</select>
+</td></tr>
+
+<tr><td align="center" style="border:1px black solid;">
+<input type="button" onclick="rotate(0);" value="ll&lt;&lt;" title="Jump to beginning" />
+<input type="button" onclick="rotate(x-1);" value="&lt;&lt;" title="Last Picture" />
+<input type="button" name="fa" onClick="this.value=((this.value=='Stop')?'Start':'Stop');auto();" value="Start" title="Autoplay" style="width:75px;" />
+<input type="button" onclick="rotate(x+1);" value="&gt;&gt;" title="Next Picture" />
+<input type="button" onclick="rotate(this.form.slide.length-1);" value="&gt;&gt;ll" title="Jump to end" />
+</td></tr></table></form>
+<!-- end of slideshow -->
+
+<p style="color:black; font-size:15px"> ★You can create an event by clicking on our calendar and entering in the necessary information. You can also use our maps page to look up locations where events may take place, and to see how far away the event is from you.</p>
+
+<p style="color:black; font-size:15px"> ★If you have any questions, please feel free to contact us by sending a message to the user "Contact", and we will get back to you as soon as possible!</p>

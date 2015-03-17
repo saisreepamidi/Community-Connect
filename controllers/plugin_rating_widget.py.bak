@@ -1,0 +1,37 @@
+# -*- coding: utf-8 -*-
+# try something like
+from plugin_rating_widget import RatingWidget
+from tables import *
+db = DAL('sqlite:memory:')
+db.define_table('rate',
+    Field('rating', 'integer',
+          requires=IS_IN_SET(range(1, 6)),  # "requires" is necessary for the rating widget
+))
+
+
+db.define_table('register',
+                Field('name'),
+                Field('event_name'),
+                Field('user_id', db.auth_user),
+                Field('phone'),
+                Field('email'),
+                Field('category'),
+                Field('date_posted', 'datetime'),
+                Field('prof_pic', 'upload'),
+                Field('attend', 'boolean', default=False),
+                Field('rating', 'integer', requires=IS_IN_SET(range(1,6))), # "requires" is necessary for the rating widget
+                #format = '%(title)s',
+                )
+
+################################ The core ######################################
+# Inject the horizontal radio widget
+db.register.rating.widget = RatingWidget()
+################################################################################
+
+
+def index():
+    form = SQLFORM(db.register)
+    if form.accepts(request.vars, session):
+        session.flash = 'submitted %s' % form.vars
+        redirect(URL('index'))
+    return dict(form=form)

@@ -1,0 +1,149 @@
+{{left_sidebar_enabled,right_sidebar_enabled=False,('message' in globals())}}
+{{extend 'layout.html'}}
+
+<h1>Profile</h1>
+
+<style type="text/css">
+#ProfilePage
+{
+    /* Move it off the top of the page, then centre it horizontally */
+    margin: 50px auto;
+    width: 635px;
+
+/* For visibility. Delete me */
+border: 1px solid white;
+}
+
+#LeftCol
+{
+    /* Move it to the left */
+    float: left;
+
+    width: 200px;
+    text-align: center;
+
+    /* Move it away from the content */
+    margin-right: 20px;
+
+/* For visibility. Delete me */
+border: 1px solid black;
+}
+
+#Photo
+{
+    /* Width and height of photo container */
+    width: 200px;
+    height: 200px;
+
+/* For visibility. Delete me */
+border: 1px solid black;
+}
+
+#PhotoOptions
+{
+    text-align: center;
+    width: 200px;
+
+/* For visibility. Delete me */
+border: 1px solid black;
+}
+
+#Info
+{
+    width: 300px;
+    text-align: center;
+
+    /* Move it to the left */
+    float: left;
+
+/* For visibility. Delete me */
+border: 1px solid black;
+}
+
+#Info strong
+{
+    /* Give it a width */
+    display: inline-block;
+    width: 100px;
+
+/* For visibility. Delete me */
+border: 1px solid orange;
+}
+
+#Info span
+{
+    /* Give it a width */
+    display: inline-block;
+    width: 250px;
+
+/* For visibility. Delete me */
+border: 1px solid purple;
+}
+</style>
+
+<div id="ProfilePage">
+    <div id="LeftCol">
+        <div id="Photo"></div>
+        <div id="ProfileOptions">
+        a
+        </div>
+    </div>
+
+    <div id="Info">
+        <p>
+            <strong>Id:</strong>
+            <span>blah</span>
+        </p>
+        <p>
+            <strong>First name:</strong>
+            <span>blah</span>
+        </p>
+        <p>
+            <strong>Last Name:</strong> 
+            <span>blah</span>
+        </p>
+        <p>
+            <strong>Email:</strong>
+            <span>bla</span>
+        </p>
+        <p>
+            <strong>Username:</strong>
+            <span>bla</span>
+        </p>
+        <p>
+            <strong>Address:</strong>
+            <span>bla</span>
+        </p>
+        <p>
+            <strong>City:</strong>
+            <span>bla</span>
+        </p>
+        <p>
+            <strong>Zip Code:</strong>
+            <span>bla</span>
+        </p>
+        <p>
+            <strong>Phone:</strong>
+            <span>bla</span>
+        </p>
+        <p>
+            <strong>School:</strong>
+            <span>bla</span>
+        </p>
+        <p>
+            <strong>Organization:</strong>
+            <span>bla</span>
+        </p>
+    </div>
+
+    <!-- Needed because other elements inside ProfilePage have floats -->
+    <div style="clear:both"></div>
+</div>
+
+{{=form}}
+
+<p>{{=A('Edit Fields', _class='btn', _href=URL('default', 'profile'))}}</p>
+<p>{{=A('View History', _class='btn', _href=URL('default', 'history'))}}</p>
+
+
+{{=A('Main Page', _class='btn', _href=URL('default', 'index'))}}

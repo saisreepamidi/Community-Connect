@@ -1,0 +1,293 @@
+# -*- coding: utf-8 -*-
+# this file is released under public domain and you can use without limitations
+
+#########################################################################
+## This is a sample controller
+## - index is the default action of any application
+## - user is required for authentication and authorization
+## - download is for downloading files uploaded in the db (does streaming)
+## - api is an example of Hypermedia API support and access control
+#########################################################################
+
+# The main page of our project.
+@auth.requires_login()
+def index():
+    response.flash = T("CMPS183 Project!")
+
+    something = db().select(db.register.ALL)
+
+    form = SQLFORM(db.rate)
+    if form.accepts(request.vars, session):
+        session.flash = 'submitted %s' % form.vars
+        redirect(URL('index'))
+    return dict(form=form, something=something)
+
+# Allows you to post an event.
+@auth.requires_login()
+def register():
+    """Register an event."""
+    form = SQLFORM(db.register)
+    if form.process().accepted:
+        #Successful processing.
+        session.flash = T('Registered Event')
+        redirect(URL('default', 'index'))
+    return dict(form=form)
+
+@auth.requires_login()
+def create():
+    
+    form1 = SQLFORM(db.register).process(next=(URL('index')))
+    #form1 = SQLFORM(db.register)
+    if form1.process().accepted:
+        #Successful processing.
+        session.flash = T('Registered Event')
+        #need to close existing window
+        redirect(URL('default', 'index'))
+    
+    return dict(form1=form1)
+
+# Connects the calendar API to the register table. 
+@auth.requires_login()
+def mycal():
+    rows=db(db.register).select()
+    return dict(rows=rows)
+
+#Credit for help on gmaps: http://ochiba77.blogspot.com/2012/06/how-to-use-gmapsjs-on-web2py.html
+@auth.requires_login()
+def mymap():
+    from gluon.tools import geocode
+    latitude = longtitude = ''
+    form=SQLFORM.factory(Field('search'), _class='form-search')
+    form.custom.widget.search['_class'] = 'input-long search-query'
+    form.custom.submit['_value'] = 'Search'
+    form.custom.submit['_class'] = 'btn'
+    if form.accepts(request):
+        address=form.vars.search
+        (latitude, longitude) = geocode(address)
+    else:
+        (latitude, longitude) = ('','')
+    return dict(form=form, latitude=latitude, longitude=longitude)
+
+# Function that deals with enrolling in event.
+def enrollInEvent():
+    form = SQLFORM(db.attending)
+    if form.process().accepted:
+        redirect(URL('default', 'events'))
+    return dict(form=form)
+
+# Allows users to rate events that they have attended.
+def rateEvent():
+    form = SQLFORM(db.ratings)
+    if form.process().accepted:
+        redirect(URL('default', 'events'))
+    return dict(form=form)
+
+# Sends messages to other users.
+def sendMessage():
+    form = SQLFORM(db.messaging)
+    if form.process().accepted:
+        #Successful processing.
+        session.flash = T('Message Sent')
+        redirect(URL('default', 'userInbox'))
+    return dict(form=form)
+
+# Displays the logged in users' messages.
+def userInbox():  
+    # Makes user that the user recipient is the logged in user.
+    q = db.messaging.user_recipient == auth.user.id
+    form = SQLFORM.grid(q,
+                        csv=False,)
+    return locals()
+
+#function that computes average of ratings
+def measure_ratings():
+    events = db().select(db.register.ALL)
+    b=[]
+    for i in events:
+        events_in_attending = db(db.ratings.event_name==i.id).select()
+        s = 0
+        avg = 0.0
+        for j in events_in_attending:
+            rval = j.rating or 0
+            s = 0.0 + s + rval
+            b.append(j.rating)    
+        try:
+            avg = 0.0 + s/len(events_in_attending)
+        except:
+            avg=0
+        db(db.register.id == i.id).update(rating=avg)
+ 
+
+# The grid view of all the events.
+@auth.requires_login()
+def events():
+    #call to avg ratings function to encorporate into events page
+    measure_ratings();
+     
+    # Selects the register table. 
+    q = (db.register) 
+    
+    def generate_edit_button(row):
+        # If the record is ours, we can delete it.
+        b = ''
+        if auth.user_id == row.user_id:
+            b = A('Edit', _class='btn', _href=URL('default', 'edit', args=[row.id],  user_signature=True))
+            user_signature= True
+        return b
+    
+    def generate_del_button(row):
+        # If the record is ours, we can delete it.
+        b = ''
+        if auth.user_id == row.user_id:
+            b = A('Delete', _class='btn', _href=URL('default', 'delete', args=[row.id], user_signature=True))
+        return b
+
+
+    # Displays the buttons for editing and deletion.
+    links = [
+        dict(header='', body = generate_edit_button),
+        dict(header='', body = generate_del_button),
+        ]
+
+    #Displays all of the events.
+    start_idx = 1 
+    create=(auth.user_id is not None)
+    form = SQLFORM.grid(q, args=request.args[:start_idx],
+        fields=[db.register.user_id, 
+                db.register.date_posted, db.register.name,
+                db.register.event_name, db.register.email, 
+                db.register.rating,],
+        editable=False, deletable=False,
+        links=links,
+        paginate=10, csv=False,
+        )
+    
+    return dict(form=form)
+
+# Gets history of events attended by user logged in.
+#@auth.requires_signature()
+@auth.requires_login()
+def history():
+    # Chooses to display only the field that the logged in user has attended.
+    rows = db((db.attending.user_attending==auth.user) & (db.attending.attended==True)).select()
+    return dict(rows=rows)
+
+# Gets a list of events that people have attended.
+def peopleAttending():
+    # Chooses to display only the fields that people have attended
+    rows = db((db.attending.attended==True)).select()
+    return dict(rows=rows)
+ 
+#Edit user profile.             
+def profile():
+    # Lets a user edit their user profile.
+    return dict(form=auth.profile())
+
+#Displays user profile
+def view():
+    """View profile."""
+    response.flash = T("User Profile")
+    form = ''
+    
+    # Selects the information for hte logged in user.
+    something = db(db.auth_user.id == auth.user_id).select().first()
+    
+    # Allows the user to upload a profile picture.
+    url = URL('download')
+    
+    #Displays the user's information in a form.
+    form = SQLFORM(db.auth_user, record = something, readonly=True, upload=url)
+    
+    return dict(something=something, form=form)
+
+# Generates the edit button.
+@auth.requires_login()
+@auth.requires_signature()
+def edit():
+    """Edit profile."""
+    # Selects the row to edit.
+    p = db.register(request.args(0)) or redirect(URL('default', 'events'))
+    
+    # Checks to make sure that the logged in user to trying to edit their own created event.
+    if p.user_id != auth.user_id:
+        session.flash = T('Not authorized.')
+        redirect(URL('default', 'events'))
+        
+    #Updates the grid.
+    profile = SQLFORM(db.register, record=p)
+    if profile.process().accepted:
+        session.flash = T('Updated')
+        redirect(URL('default', 'events'))
+    return dict(profile=profile)
+
+#Generates the delete button.
+@auth.requires_login()
+@auth.requires_signature()
+def delete():
+    """Deletes a post."""
+    #Selects the row to delete.
+    p = db.register(request.args(0)) or redirect(URL('default', 'events'))
+    
+    # Checks to make sure that the logged in user is trying to delete their own created event.
+    if p.user_id != auth.user_id:
+        session.flash = T('Not authorized.')
+        redirect(URL('default', 'events'))
+    form= FORM.confirm('Are you sure?')
+    if form.accepted:
+        
+        #Updates the grid.
+        db(db.register.id == p.id).delete()
+        redirect(URL('default', 'events'))
+        
+    return dict(form=form)
+
+
+
+def user():
+    """
+    exposes:
+    http://..../[app]/default/user/login
+    http://..../[app]/default/user/logout
+    http://..../[app]/default/user/register
+    http://..../[app]/default/user/profile
+    http://..../[app]/default/user/retrieve_password
+    http://..../[app]/default/user/change_password
+    http://..../[app]/default/user/manage_users (requires membership in
+    use @auth.requires_login()
+        @auth.requires_membership('group name')
+        @auth.requires_permission('read','table name',record_id)
+    to decorate functions that need access control
+    """
+    return dict(form=auth())
+
+
+@cache.action()
+def download():
+    """
+    allows downloading of uploaded files
+    http://..../[app]/default/download/[filename]
+    """
+    return response.download(request, db)
+
+
+def call():
+    """
+    exposes services. for example:
+    http://..../[app]/default/call/jsonrpc
+    decorate with @services.jsonrpc the functions to expose
+    supports xml, json, xmlrpc, jsonrpc, amfrpc, rss, csv
+    """
+    return service()
+
+
+@auth.requires_login() 
+def api():
+    """
+    this is example of API with access control
+    WEB2PY provides Hypermedia API (Collection+JSON) Experimental
+    """
+    from gluon.contrib.hypermedia import Collection
+    rules = {
+        '<tablename>': {'GET':{},'POST':{},'PUT':{},'DELETE':{}},
+        }
+    return Collection(db).process(request,response,rules)

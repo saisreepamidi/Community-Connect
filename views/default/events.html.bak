@@ -1,0 +1,15 @@
+{{left_sidebar_enabled,right_sidebar_enabled=False,('message' in globals())}}
+{{extend 'layout.html'}}
+
+<h1>Events</h1>
+
+{{=A('Post an Event', _class='btn', _href=URL('default', 'register'))}}
+{{=A('Enroll in an Event', _class='btn', _href=URL('default', 'enrollInEvent'))}}
+{{=A('View Events that people are Attending', _class='btn', _href=URL('default', 'peopleAttending'))}}
+
+{{=form}}
+
+{{=A('View Calendar', _class='btn', _href=URL('default', 'mycal'))}}
+{{=A('View Map', _class='btn', _href=URL('default', 'mymap'))}}
+
+{{=A('Main Page', _class='btn', _href=URL('default', 'index'))}}

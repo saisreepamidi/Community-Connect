@@ -1,0 +1,157 @@
+<!--Your own profile page.-->
+
+{{left_sidebar_enabled,right_sidebar_enabled=False,('message' in globals())}}
+{{extend 'layout.html'}}
+
+<h1 align="center">Profile</h1>
+
+<style type="text/css">
+#ProfilePage
+{
+    /* Move it off the top of the page, then centre it horizontally */
+    margin: 50px auto;
+    width: 635px;
+
+/* For visibility. Delete me */
+border: 1px solid white;
+}
+
+#LeftCol
+{
+    /* Move it to the left */
+    float: left;
+    
+    height:200px;
+    width: 200px;
+    text-align: center;
+
+    /* Move it away from the content */
+    margin-right: 20px;
+
+/* For visibility. Delete me */
+border: 1px solid yellow;
+}
+
+#Photo
+{
+    /* Width and height of photo container */
+    width: 200px;
+    height: 200px;
+
+/* For visibility. Delete me */
+border: 1px solid yellow;
+}
+
+#PhotoOptions
+{
+    text-align: center;
+    width: 200px;
+
+/* For visibility. Delete me */
+border: 1px solid black;
+}
+    
+    
+#Info
+{
+    width: 300px;
+    text-align: center;
+
+    /* Move it to the left */
+    float: left;
+
+/* For visibility. Delete me */
+border: 1px solid black;
+}
+
+#Info strong
+{
+    /* Give it a width */
+    display: inline-block;
+    width: 100px;
+
+/* For visibility. Delete me */
+border: 1px solid white;
+}
+
+#Info span
+{
+    /* Give it a width */
+    display: inline-block;
+    width: 250px;
+
+/* For visibility. Delete me */
+border: 1px solid black;
+}
+</style>
+
+
+<div id="ProfilePage">
+    <div id="LeftCol">
+        <div id="Photo">
+            {{=IMG(_src=URL('download',args=[something.picture]), _height=200, _width=200)}}
+        </div>
+        
+        <div id="ProfileOptions">
+        Smile
+        </div>
+    </div>
+
+    <div id="Info">
+       
+        <p>
+            <strong>First name:</strong>
+            <span>{{=something.first_name}}</span>
+        </p>
+        <p>
+            <strong>Last Name:</strong> 
+            <span>{{=something.last_name}}</span>
+        </p>
+        <p>
+            <strong>Email:</strong>
+            <span>{{=something.email}}</span>
+        </p>
+        <p>
+            <strong>Username:</strong>
+            <span>{{=something.username}}</span>
+        </p>
+        <p>
+            <strong>Address:</strong>
+            <span>{{=something.address}}
+               </span>
+        </p>
+        <p>
+            <strong>City:</strong>
+            <span>{{=something.city}}</span>
+        </p>
+        <p>
+            <strong>Zip Code:</strong>
+            <span>{{=something.zip}}</span>
+        </p>
+        <p>
+            <strong>Phone:</strong>
+            <span>{{=something.phone}}</span>
+        </p>
+        <p>
+            <strong>School:</strong>
+            <span>{{=something.school}}</span>
+        </p>
+        <p>
+            <strong>Organization:</strong>
+            <span>{{=something.organization}}</span>
+        </p>
+    </div>
+
+    <!-- Needed because other elements inside ProfilePage have floats -->
+    <div style="clear:both"></div>
+</div>
+
+<!--Displays the user fields.-->
+{{form}}
+
+<!--Buttons to navigate.-->
+<p>{{=A('Edit Fields', _class='btn', _href=URL('default', 'profile'))}}</p>
+<p>{{=A('View History', _class='btn', _href=URL('default', 'history'))}}</p>
+
+
+{{=A('Main Page', _class='btn', _href=URL('default', 'index'))}}

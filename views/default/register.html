@@ -1,0 +1,12 @@
+<!--Allows you to post an event.-->
+
+{{left_sidebar_enabled,right_sidebar_enabled=False,('message' in globals())}}
+{{extend 'layout.html'}}
+
+<h1>Post an Event</h1>
+
+<!--Displays the register form.-->
+{{=form}}
+
+<!--Buttons to navigate.-->
+{{=A('Back', _class='btn', _href=URL('default', 'events'))}}

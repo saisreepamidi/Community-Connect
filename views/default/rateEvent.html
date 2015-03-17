@@ -1,0 +1,13 @@
+<!--Allows you to rate events.-->
+
+{{left_sidebar_enabled,right_sidebar_enabled=False,('message' in globals())}}
+{{extend 'layout.html'}}
+
+<h1>Rate an event you attended</h1>
+
+<!--Displays the ratings table.-->
+{{=form}}
+
+<!--Buttons to navigate.-->
+{{=A('Back', _class='btn', _href=URL('default', 'events'))}}
+{{=A('Main Page', _class='btn', _href=URL('default', 'index'))}}

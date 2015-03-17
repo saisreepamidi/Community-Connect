@@ -1,0 +1,33 @@
+<!--History of events attended by the user.-->
+
+{{left_sidebar_enabled,right_sidebar_enabled=False,('message' in globals())}}
+{{extend 'layout.html'}}
+
+<h1 align="center">History of events attended</h1>
+
+<p align="center">All the events that this user is attending!</p>
+
+
+<table border="1" style="width:100%">
+<tr>
+    <!--Sets the color and font style of header elements.-->
+    <th style="color: #C31E1E; font-family:Georgia, Serif">Username</th>
+    <th style="color: #C31E1E; font-family:Georgia, Serif">Event Name</th>
+    <th style="color: #C31E1E; font-family:Georgia, Serif">Attending?</th>
+  
+
+</tr>
+{{for i in rows:}}
+<tr>
+<!--Sets the color to black.-->
+<td style="color:black">{{=i.user_attending.first_name}}</td>
+<td style="color:black">{{=i.event_name.event_name}}</td>
+<td style="color:black">{{=i.attended}}</td>
+
+
+
+</tr>
+{{pass}}
+</table>
+
+

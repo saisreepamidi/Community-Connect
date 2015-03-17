@@ -1,0 +1,38 @@
+<!--The map where you can look up locations.-->
+
+{{extend 'layout2.html'}}
+<!-- Credit: http://ochiba77.blogspot.com/2012/06/how-to-use-gmapsjs-on-web2py.html -->
+<script src="http://maps.google.com/maps/api/js?sensor=true"></script>
+<script src="{{=URL('static','js/gmaps.js')}}"></script>
+<div>
+{{=form.custom.begin}}
+{{=form.custom.widget.search}}{{=form.custom.submit}}
+{{=form.custom.end}}
+</div>
+{{if longitude or latitude:}}
+<p>latitude, longtitude: {{=latitude}},{{=longitude}}</p>
+<div id="map" style="height:400px;width:800px" align="center"></div>
+<script>
+
+<!--Function that operates Gmaps and receives information for the latitude and longitude.-->
+$(document).ready(function(){
+  map = new GMaps({
+    div: '#map',
+    lat: {{=latitude}},
+    lng: {{=longitude}}
+  });
+   map.addMarker({
+    lat: {{=latitude}},
+    lng: {{=longitude}},
+    title: 'Here!',
+    infoWindow: {
+        content: '<p>{{=request.vars.search}}</p>'
+    }
+  });
+});
+</script>
+{{pass}}
+
+<!--Buttons to navigate.-->
+{{=A('Back', _class='btn', _href=URL('default', 'events'))}}
+{{=A('Main Page', _class='btn', _href=URL('default', 'index'))}}

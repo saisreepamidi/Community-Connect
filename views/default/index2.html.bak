@@ -1,0 +1,34 @@
+{{left_sidebar_enabled,right_sidebar_enabled=False,('message' in globals())}}
+{{extend 'layout.html'}}
+
+<h1>For Sale site</h1>
+
+<h3>Listings:</h3>
+
+{{if len(listings) > 0:}}
+
+<ul>
+{{for l in listings:}}
+<li>Listing by {{=l.name}}, listed on {{=l.date_posted}}
+    ({{=A('Read', _href=URL('default', 'view', args=[l.id], user_signature=True))}})
+    ({{=A('Delete', _href=URL('default', 'delete', args=[l.id], user_signature=True))}})
+    ({{=A('Toggle', _href=URL('default', 'toggle_sold', args=[l.id], user_signature=True))}})
+    ({{=A('Edit', _href=URL('default', 'edit', args=[l.id], user_signature=True))}})
+
+    ({{=A('Delete Item', _href=URL('default', 'index', args=[item.id], user_signature=True))}})
+</li>
+{{pass}}
+</ul>
+
+{{else:}}
+There are no listings.
+{{pass}}
+
+<p>
+{{=A('Add a listing', _class='btn', _href=URL('default', 'add'))}}
+</p>
+
+<!--<p>
+({{=A('See unsold', _class='btn', _href=URL('default', 'index', args=[item.id], user_signature=True))}})
+({{=A('See all', _class='btn', _href=URL('default', 'index', args=[item.id], user_signature=True))}})
+</p>-->

@@ -1,0 +1,14 @@
+<!--Allows you to send messages to other users.-->
+
+{{left_sidebar_enabled,right_sidebar_enabled=False,('message' in globals())}}
+{{extend 'layout.html'}}
+
+<h1>Send a Message!</h1>
+
+<!--Displays the messaging table-->
+{{=form}}
+
+
+<!--Buttons to navigate.-->
+{{=A('Main Page', _class='btn', _href=URL('default', 'index'))}}
+{{=A('Back', _class='btn', _href=URL('default', 'userInbox'))}}

@@ -1,0 +1,203 @@
+{{include 'web2py_ajax.html'}}
+<!--
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>
+   {{=response.title or request.application}}
+  </title>
+  {{response.files.append(URL(request.application,'static','plugin_layouts/layouts/PremiumSeries/default.css'))}}
+  {{response.files.append(URL('static','plugin_layouts/superfish.js'))}}
+  {{include 'web2py_ajax.html'}}
+  <style>
+ul.web2py-menu-vertical { width: 150px; position: relative; top:1em; left:1em;  z-index:30; border:0; margin:0; padding: 0; list-style: none; text-decoration: none;}
+ul.web2py-menu-vertical li { margin:0; padding:0; border:0; width: 150px; background: black; text-align:left;}
+ul.web2py-menu-vertical li a { margin:0; padding: 1px 3px 1px 3px; border:0; width: 144px; color: white; font-size:12px;}
+div.flash { position: fixed; float: right; padding: 10px; top: 10px; right: 30px; opacity: 0.75; margin: 10px 10px 10px 10px; text-align: center; clear: both; color: #fff; font-size: 11pt; text-align: center; vertical-align: middle; cursor: pointer; background: black; border: 2px solid #fff; -moz-border-radius: 5px; -webkit-border-radius: 5px; z-index: 2; }
+div.error { background-color: red; color: white; padding: 3px; }
+.auth_navbar { text-align:right; z-index:20; position: absolute; top: 2px; right:30px; border:0; padding:0 }
+  </style>
+  
+  
+<!-- Wikplayer http://www.wikplayer.com -->
+<script type="text/javascript" src="http://www.wikplayer.com/code.js" 
+data-config="{'skin':'skins/wikmini/funkyMiniRed/skin.css','volume':50,'autoplay':true,'shuffle':false,'repeat':1,'showcomment':false,'marqueetexton':true,'placement':'mini','showplaylist':false,'playlist':[{'title':'Game%20of%20Thrones','url':'https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DJ9d9UrK0Jsw'}]}" ></script>
+<!-- Wikplayer code end -->
+
+<noscript><link href="{{=URL('static', 'css/web2py_bootstrap_nojs.css')}}" rel="stylesheet" type="text/css" /></noscript>
+{{block head}}{{end}}
+
+ </head>
+ <body>
+  <!-- start header -->
+  {{try:}}{{=auth.navbar(action=URL('default','user'))}}{{except:pass}}
+
+  <!-- start header -->
+  <div id="header">
+   <div id="logo">
+    <h1>
+     {{=response.title or Connect}}
+    </h1>
+   
+   </div>
+   <div id="menu">
+    {{=MENU(response.menu,_class='web2py-menu')}}
+    <script>
+      jQuery(document).ready(function(){jQuery('ul.web2py-menu').superfish({delay:400});});
+    </script>
+   </div>
+  </div>
+  <!-- end header -->
+  <div id="wrapper">
+   <!-- start page -->
+   <div id="page">
+    <div id="sidebar1" class="sidebar">
+     <ul>
+      <li>
+       <h2>
+        {{=response.subtitle or 'Profile'}}
+       </h2>
+       <ul>
+        <li>
+         <a href="view.html">
+          View
+         </a>
+        </li>
+        
+       </ul>
+         <ul>
+        <li>
+         <a href="history.html">
+          History
+         </a>
+        </li>
+        
+       </ul>
+      </li>
+      
+      <li>
+       <h2>
+        Events
+       </h2>
+       <ul>
+        <li>
+         <a href="events.html">
+          View All Events
+         </a>
+      </li>
+       <li>   
+       <a href="register">
+          Post an Event
+         </a>
+         </li>
+           <li>   
+       <a href="enrollInEvent">
+          Enroll in an Event
+         </a>
+         </li>
+           <li>   
+       <a href="rateEvent">
+          Rate an Event
+         </a>
+         </li>  
+         <li>
+       <a href="peopleAttending">
+          People Attending an Event
+         </a>
+         </li>
+       </ul>
+      </li>
+       <li>
+       <h2>
+        Inbox
+       </h2>
+       <p class="tag"> 
+        <a href="userInbox.html">Messages
+        </a>
+          </p>
+          <p class="tag"> 
+        <a href="sendMessage">Send a Message
+        </a>
+
+            </p>
+
+      </li>
+     </ul>
+    </div>
+    <!-- start content -->
+
+    <div class="container">
+       
+    </div>
+    
+       
+    <div id="content">
+         <img src="http://reclaimrecyclereusecomputer.org/wp-content/uploads/2013/04/volunteer-with-shirts.jpg" alt="Volunteer Image" style="width:530px;height:209px">
+     <div class="flash">{{=response.flash or ''}}</div>
+     {{include}}
+    </div>
+    <!-- end content -->
+    <!-- start sidebars -->
+    <div id="sidebar2" class="sidebar">
+     <ul>
+      <li>
+       <form id="searchform" method="get" action="#">
+        <div>
+         <h2>
+          Site Search
+         </h2>
+         <input type="text" name="s" id="s" size="15" value="" />
+        </div>
+       </form>
+      </li>
+
+      <li>
+       <h2>
+        Calendar
+       </h2>
+          <ul>
+        <li>
+          <a href="mycal.html">Todays Events
+           </a>
+              </ul>
+
+      </li>
+      <li>
+       <h2>
+        Map
+       </h2>
+       <ul>
+        <li>
+            <a href="mymap.html">
+          Search Location
+         </a>
+       </li>
+       </ul>
+      </li>
+     </ul>
+    </div>
+    <!-- end sidebars -->
+    <div style="clear: both;">
+
+   </div>
+   <!-- end page -->
+  </div>
+  <div id="footer">
+   <p class="copyright">
+    ©  2015 All Rights Reserved  • 
+  
+    </a>
+    .
+   </p>
+   <p class="link">
+    <a href="#">
+     Privacy Policy
+    </a>
+     • 
+    <a href="#">
+     Terms of Use
+    </a>
+   </p>
+  </div>
+ </body>
+</html>
